@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/waiterFragment">
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.smartkitchenandroid.ui.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.smartkitchenandroid.ui.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signIn_to_waiter"
+            app:destination="@id/waiterFragment"
+            app:popUpTo="@id/waiterFragment" />
+        <action
+            android:id="@+id/action_signIn_to_kitchenCoordinator"
+            app:destination="@id/kitchenCoordinatorFragment"
+            app:popUpTo="@id/kitchenCoordinatorFragment" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_signIn"
+        app:destination="@id/signInFragment" />
+    <fragment
+        android:id="@+id/waiterFragment"
+        android:name="com.example.smartkitchenandroid.ui.WaiterFragment"
+        android:label="fragment_waiter"
+        tools:layout="@layout/fragment_waiter" />
+    <fragment
+        android:id="@+id/kitchenCoordinatorFragment"
+        android:name="com.example.smartkitchenandroid.ui.KitchenCoordinatorFragment"
+        android:label="fragment_kitchen_coordinator"
+        tools:layout="@layout/fragment_kitchen_coordinator" />
+    <action
+        android:id="@+id/action_global_about"
+        app:destination="@id/aboutFragment" />
+</navigation>

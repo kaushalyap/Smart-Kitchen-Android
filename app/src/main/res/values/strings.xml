@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Smart Kitchen</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="sign_in">Sign In</string>
+    <string name="passwords_do_not_match">Passwords do not match!</string>
+    <string name="about">About</string>
+    <string name="version_1_0_0">Version : 1.0.0</string>
+    <string name="app_about_description">Smart Kitchen app help waiters and kitchen coordinators to deliver customer orders efficiently.</string>
+</resources>
