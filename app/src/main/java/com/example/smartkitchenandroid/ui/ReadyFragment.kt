@@ -42,6 +42,7 @@ class ReadyFragment : Fragment() {
 
     companion object {
         const val TAG: String = "ReadyFragment"
+        fun newInstance(): ReadyFragment = ReadyFragment()
 
     }
 }

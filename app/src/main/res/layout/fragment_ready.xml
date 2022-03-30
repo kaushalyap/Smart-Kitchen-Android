@@ -3,11 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".ui.ReadyFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_ready"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:listitem="@layout/item_order" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txt_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_orders_in_ready_queue"
+        android:textSize="20sp" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

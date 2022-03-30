@@ -1,8 +1,6 @@
 package com.example.smartkitchenandroid.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -31,20 +29,10 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragment_container_view) as NavHostFragment
         navController = navHostFragment.navController
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        val topLevelDestinations =
+            setOf(R.id.signInFragment, R.id.waiterFragment, R.id.kitchenCoordinatorFragment)
+        val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.action_bar, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.about -> navController.navigate(R.id.action_global_about)
-        }
-        return true
+        setSupportActionBar(binding.toolbar)
     }
 }

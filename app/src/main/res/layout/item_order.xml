@@ -13,7 +13,7 @@
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="4dp"
-        tools:text="Kottu Full 2, Egg Hoppers 5" />
+        tools:text="Kottu Full 2, String Hoppers 5" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txt_status"

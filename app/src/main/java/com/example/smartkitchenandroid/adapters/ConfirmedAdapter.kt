@@ -45,6 +45,6 @@ class ConfirmedAdapter(var dataSet: Array<Order>) :
     override fun getItemCount(): Int = dataSet.size
 
     companion object {
-        const val TAG = "ConfirmedAdapter"
+        const val TAG: String = "ConfirmedAdapter"
     }
 }

@@ -25,14 +25,6 @@
         android:hint="@string/password"
         android:inputType="textPassword" />
 
-    <TextView
-        android:id="@+id/lbError"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/passwords_do_not_match"
-        android:textColor="@android:color/holo_red_light"
-        android:visibility="invisible" />
-
     <Button
         android:id="@+id/btn_sign_in"
         android:layout_width="match_parent"

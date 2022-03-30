@@ -42,6 +42,6 @@ class NewFragment : Fragment() {
 
     companion object {
         const val TAG: String = "NewFragment"
-
+        fun newInstance(): NewFragment = NewFragment()
     }
 }

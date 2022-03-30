@@ -45,6 +45,6 @@ class NewAdapter(var dataSet: Array<Order>) :
     override fun getItemCount(): Int = dataSet.size
 
     companion object {
-        const val TAG = "NewAdapter"
+        const val TAG: String = "NewAdapter"
     }
 }

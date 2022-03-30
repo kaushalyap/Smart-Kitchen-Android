@@ -4,10 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".ui.NewFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_new"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txt_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_orders_in_new_queue"
+        android:textSize="20sp" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

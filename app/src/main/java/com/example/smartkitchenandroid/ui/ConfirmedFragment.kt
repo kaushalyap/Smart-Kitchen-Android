@@ -43,5 +43,7 @@ class ConfirmedFragment : Fragment() {
 
     companion object {
         const val TAG: String = "ConfirmedFragment"
+        fun newInstance(): ConfirmedFragment = ConfirmedFragment()
+
     }
 }

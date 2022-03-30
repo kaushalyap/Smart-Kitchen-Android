@@ -8,12 +8,12 @@
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.example.smartkitchenandroid.ui.AboutFragment"
-        android:label="fragment_about"
+        android:label="About"
         tools:layout="@layout/fragment_about" />
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.example.smartkitchenandroid.ui.SignInFragment"
-        android:label="fragment_sign_in"
+        android:label="Sign In"
         tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signIn_to_waiter"
@@ -30,12 +30,12 @@
     <fragment
         android:id="@+id/waiterFragment"
         android:name="com.example.smartkitchenandroid.ui.WaiterFragment"
-        android:label="fragment_waiter"
+        android:label="Waiter"
         tools:layout="@layout/fragment_waiter" />
     <fragment
         android:id="@+id/kitchenCoordinatorFragment"
         android:name="com.example.smartkitchenandroid.ui.KitchenCoordinatorFragment"
-        android:label="fragment_kitchen_coordinator"
+        android:label="K-Coordinator"
         tools:layout="@layout/fragment_kitchen_coordinator" />
     <action
         android:id="@+id/action_global_about"

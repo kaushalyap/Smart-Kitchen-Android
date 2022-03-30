@@ -7,4 +7,8 @@
     <string name="about">About</string>
     <string name="version_1_0_0">Version : 1.0.0</string>
     <string name="app_about_description">Smart Kitchen app help waiters and kitchen coordinators to deliver customer orders efficiently.</string>
+    <string name="no_orders_in_ready_queue">No orders in Ready queue!</string>
+    <string name="no_orders_in_todo_queue">No orders in Todo queue!</string>
+    <string name="no_orders_in_new_queue">No orders in New queue!</string>
+    <string name="no_orders_in_confirmed_queue">No orders in Confirmed queue!</string>
 </resources>

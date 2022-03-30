@@ -39,12 +39,11 @@ class ReadyAdapter(var dataSet: Array<Order>) :
         viewHolder.cbCheck.setOnCheckedChangeListener { _, _ ->
 
         }
-
     }
 
     override fun getItemCount(): Int = dataSet.size
 
     companion object {
-        const val TAG = "ReadyAdapter"
+        const val TAG: String = "ReadyAdapter"
     }
 }
