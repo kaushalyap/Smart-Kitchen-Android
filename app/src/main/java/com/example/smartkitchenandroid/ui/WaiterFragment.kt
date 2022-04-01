@@ -1,5 +1,6 @@
 package com.example.smartkitchenandroid.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -26,7 +27,6 @@ class WaiterFragment : Fragment() {
     }
 
     private fun init() {
-
         val fragmentList = arrayListOf(
             NewFragment.newInstance(),
             ConfirmedFragment.newInstance(),
@@ -47,15 +47,25 @@ class WaiterFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.about -> findNavController().navigate(R.id.action_global_about)
+            R.id.sign_out -> signOut()
         }
         return true
+    }
+
+    private fun signOut() {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putBoolean(getString(R.string.pref_already_signed_in), false)
+            putString(getString(R.string.pref_role), "")
+            apply()
+        }
+        findNavController().navigate(R.id.action_global_signIn)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 
     companion object {
         const val TAG: String = "WaiterFragment"

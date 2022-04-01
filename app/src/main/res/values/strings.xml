@@ -11,4 +11,7 @@
     <string name="no_orders_in_todo_queue">No orders in Todo queue!</string>
     <string name="no_orders_in_new_queue">No orders in New queue!</string>
     <string name="no_orders_in_confirmed_queue">No orders in Confirmed queue!</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="pref_already_signed_in">already_signed_in</string>
+    <string name="pref_role">role</string>
 </resources>

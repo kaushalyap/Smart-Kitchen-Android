@@ -7,15 +7,15 @@ import retrofit2.Response
 
 class Repository {
 
-    suspend fun getUser(user: User): Response<User> {
-        return RetrofitInstance.api.getUser(user)
+    suspend fun getUser(email: String, passwordHash: String): Response<Array<User>> {
+        return RetrofitInstance.api.getUser(email, passwordHash)
     }
 
     suspend fun getOrderByStatus(status: String): Response<Array<Order>> {
-        return RetrofitInstance.api.getOrderByStatus(status)
+        return RetrofitInstance.api.getOrderByStatus(status, "timestamp", "desc")
     }
 
-    suspend fun postUpdateOrderStatus(status: String): Response<Boolean> {
+    suspend fun postUpdateOrderStatus(status: String): Response<String> {
         return RetrofitInstance.api.updateOrderStatus(status)
     }
 }
