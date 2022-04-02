@@ -21,7 +21,7 @@ interface SmartKitchenApi {
         @Query("status") status: String,
         @Query("_sort") sort: String,
         @Query("_order") order: String
-    ): Response<Array<Order>>
+    ): Response<List<Order>>
 
     @Headers(HEADER_USER_AGENT)
     @PATCH("orders/{id}")

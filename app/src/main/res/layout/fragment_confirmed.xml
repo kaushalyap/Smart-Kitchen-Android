@@ -9,14 +9,23 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_confirmed"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_order" />
+
+    <ImageView
+        android:id="@+id/img_placeholder"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:contentDescription="@string/man_and_woman_looking_at_an_empty_box"
+        android:src="@drawable/ic_empty_box"
+        android:visibility="gone" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txt_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="@string/no_orders_in_confirmed_queue"
         android:textSize="20sp" />
 

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smartkitchenandroid.R
 import com.example.smartkitchenandroid.models.Order
 
-class ConfirmedAdapter(var dataSet: Array<Order>) :
+class ConfirmedAdapter(var dataSet: List<Order>) :
     RecyclerView.Adapter<ConfirmedAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

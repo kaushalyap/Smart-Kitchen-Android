@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smartkitchenandroid.R
 import com.example.smartkitchenandroid.models.Order
 
-class NewAdapter(var dataSet: Array<Order>) :
+class NewAdapter(var dataSet: List<Order>) :
     RecyclerView.Adapter<NewAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

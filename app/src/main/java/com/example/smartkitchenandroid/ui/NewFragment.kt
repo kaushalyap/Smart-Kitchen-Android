@@ -2,13 +2,14 @@ package com.example.smartkitchenandroid.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.smartkitchenandroid.adapters.ConfirmedAdapter
+import com.example.smartkitchenandroid.adapters.NewAdapter
 import com.example.smartkitchenandroid.databinding.FragmentNewOrderBinding
 import com.example.smartkitchenandroid.models.Order
 import com.example.smartkitchenandroid.models.OrderStatus
@@ -22,9 +23,9 @@ class NewFragment : Fragment() {
     private var _binding: FragmentNewOrderBinding? = null
     private val binding get() = _binding!!
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var adapter: ConfirmedAdapter
+    private lateinit var adapter: NewAdapter
     private lateinit var viewModel: WaiterViewModel
-    private var orders = emptyArray<Order>()
+    private var orders = emptyList<Order>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,8 +44,7 @@ class NewFragment : Fragment() {
     private fun setupRV() {
         linearLayoutManager = LinearLayoutManager(context)
         binding.rvNew.layoutManager = linearLayoutManager
-        adapter = ConfirmedAdapter(orders)
-        binding.rvNew.adapter = adapter
+
     }
 
     private fun initViewModel() {
@@ -55,8 +55,18 @@ class NewFragment : Fragment() {
         viewModel.apiResponse.observe(requireActivity()) { response ->
             if (response.isSuccessful) {
                 if (response.body()?.isNotEmpty() == true) {
-                    Log.d(TAG, "Order : ${response.body()?.get(0)?.order.toString()}")
-                    orders = response.body() as Array<Order>
+                    Log.d(TAG, "Order : ${response.body()?.toString()}")
+                    orders = response.body() as List<Order>
+                    if (orders.isNotEmpty()) {
+                        binding.root.gravity = Gravity.NO_GRAVITY
+                        adapter = NewAdapter(orders)
+                        binding.rvNew.adapter = adapter
+                    } else {
+                        binding.imgPlaceholder.visibility = View.VISIBLE
+                        binding.rvNew.visibility = View.GONE
+                        binding.txtPlaceholder.visibility = View.VISIBLE
+                    }
+
                 } else
                     Log.d(TAG, "Response is empty!")
             } else

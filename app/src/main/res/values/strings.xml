@@ -14,4 +14,7 @@
     <string name="sign_out">Sign Out</string>
     <string name="pref_already_signed_in">already_signed_in</string>
     <string name="pref_role">role</string>
+    <string name="empty_streets">empty streets</string>
+    <string name="man_looking_at_a_void">Man looking at a void</string>
+    <string name="man_and_woman_looking_at_an_empty_box">Man and woman looking at an empty box</string>
 </resources>

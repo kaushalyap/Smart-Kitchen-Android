@@ -11,7 +11,7 @@ class Repository {
         return RetrofitInstance.api.getUser(email, passwordHash)
     }
 
-    suspend fun getOrderByStatus(status: String): Response<Array<Order>> {
+    suspend fun getOrderByStatus(status: String): Response<List<Order>> {
         return RetrofitInstance.api.getOrderByStatus(status, "timestamp", "desc")
     }
 

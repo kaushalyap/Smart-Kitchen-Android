@@ -2,6 +2,7 @@ package com.example.smartkitchenandroid.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ class ConfirmedFragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: ConfirmedAdapter
     private lateinit var viewModel: WaiterViewModel
-    private var orders = emptyArray<Order>()
+    private var orders = emptyList<Order>()
 
 
     override fun onCreateView(
@@ -42,11 +43,9 @@ class ConfirmedFragment : Fragment() {
     }
 
     private fun setupRV() {
-        val orders = emptyArray<Order>()
         linearLayoutManager = LinearLayoutManager(context)
         binding.rvConfirmed.layoutManager = linearLayoutManager
-        adapter = ConfirmedAdapter(orders)
-        binding.rvConfirmed.adapter = adapter
+
     }
 
     private fun initViewModel() {
@@ -57,8 +56,17 @@ class ConfirmedFragment : Fragment() {
         viewModel.apiResponse.observe(requireActivity()) { response ->
             if (response.isSuccessful) {
                 if (response.body()?.isNotEmpty() == true) {
-                    Log.d(TAG, "Order : ${response.body()?.get(0)?.order.toString()}")
-                    orders = response.body() as Array<Order>
+                    Log.d(TAG, "Order : ${response.body()?.toString()}")
+                    orders = response.body() as List<Order>
+                    if (orders.isNotEmpty()) {
+                        binding.root.gravity = Gravity.NO_GRAVITY
+                        adapter = ConfirmedAdapter(orders)
+                        binding.rvConfirmed.adapter = adapter
+                    } else {
+                        binding.rvConfirmed.visibility = View.GONE
+                        binding.imgPlaceholder.visibility = View.VISIBLE
+                        binding.txtPlaceholder.visibility = View.VISIBLE
+                    }
                 } else
                     Log.d(TAG, "Response is empty!")
             } else

@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class WaiterViewModel(private val repository: Repository) : ViewModel() {
-    val apiResponse: MutableLiveData<Response<Array<Order>>> = MutableLiveData()
+    val apiResponse: MutableLiveData<Response<List<Order>>> = MutableLiveData()
     val statusCode: MutableLiveData<Response<String>> = MutableLiveData()
 
     fun getOrderByStatus(status: String) {
