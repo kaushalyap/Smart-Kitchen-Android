@@ -8,4 +8,6 @@ class WaiterViewModelFactory(private val repository: Repository) : ViewModelProv
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return WaiterViewModel(repository) as T
     }
+
+
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.smartkitchenandroid.R
 import com.example.smartkitchenandroid.adapters.ConfirmedAdapter
 import com.example.smartkitchenandroid.databinding.FragmentConfirmedBinding
 import com.example.smartkitchenandroid.models.Order
@@ -53,25 +54,38 @@ class ConfirmedFragment : Fragment() {
         val viewModelFactory = WaiterViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[WaiterViewModel::class.java]
         viewModel.getOrderByStatus(OrderStatus.CONFIRMED.name)
-        viewModel.apiResponse.observe(requireActivity()) { response ->
-            if (response.isSuccessful) {
-                if (response.body()?.isNotEmpty() == true) {
-                    Log.d(TAG, "Order : ${response.body()?.toString()}")
-                    orders = response.body() as List<Order>
-                    if (orders.isNotEmpty()) {
-                        binding.root.gravity = Gravity.NO_GRAVITY
-                        adapter = ConfirmedAdapter(orders)
-                        binding.rvConfirmed.adapter = adapter
-                    } else {
-                        binding.rvConfirmed.visibility = View.GONE
-                        binding.imgPlaceholder.visibility = View.VISIBLE
-                        binding.txtPlaceholder.visibility = View.VISIBLE
-                    }
-                } else
-                    Log.d(TAG, "Response is empty!")
-            } else
-                Log.d(TAG, "Error : ${response.code()}")
+        viewModel.error.observe(requireActivity()) { error ->
+            if (error == null) {
+                viewModel.apiResponse.observe(requireActivity()) { response ->
+                    if (response.isSuccessful) {
+                        if (response.body()?.isNotEmpty() == true) {
+                            Log.d(TAG, "Order : ${response.body()?.toString()}")
+                            orders = response.body() as List<Order>
+                            if (orders.isNotEmpty()) {
+                                binding.root.gravity = Gravity.NO_GRAVITY
+                                binding.rvConfirmed.visibility = View.VISIBLE
+                                adapter = ConfirmedAdapter(orders)
+                                binding.rvConfirmed.adapter = adapter
+                            } else {
+                                binding.rvConfirmed.visibility = View.GONE
+                                binding.imgPlaceholder.visibility = View.VISIBLE
+                                binding.txtPlaceholder.visibility = View.VISIBLE
+                            }
+                        } else
+                            Log.d(TAG, "Response is empty!")
+                    } else
+                        Log.d(TAG, "Error : ${response.code()}")
+                }
+            } else {
+                binding.rvConfirmed.visibility = View.GONE
+                binding.imgPlaceholder.setImageResource(R.drawable.ic_stars)
+                binding.imgPlaceholder.visibility = View.VISIBLE
+
+                binding.txtPlaceholder.text = "No internet!"
+                binding.txtPlaceholder.visibility = View.VISIBLE
+            }
         }
+
     }
 
     override fun onDestroyView() {
@@ -83,6 +97,5 @@ class ConfirmedFragment : Fragment() {
     companion object {
         const val TAG: String = "ConfirmedFragment"
         fun newInstance(): ConfirmedFragment = ConfirmedFragment()
-
     }
 }

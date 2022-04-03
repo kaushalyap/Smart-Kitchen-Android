@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.smartkitchenandroid.R
 import com.example.smartkitchenandroid.adapters.ReadyAdapter
 import com.example.smartkitchenandroid.databinding.FragmentReadyBinding
 import com.example.smartkitchenandroid.models.Order
@@ -52,26 +53,39 @@ class ReadyFragment : Fragment() {
         val viewModelFactory = WaiterViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[WaiterViewModel::class.java]
         viewModel.getOrderByStatus(OrderStatus.READY.name)
-        viewModel.apiResponse.observe(requireActivity()) { response ->
-            if (response.isSuccessful) {
-                if (response.body()?.isNotEmpty() == true) {
-                    Log.d(TAG, "Order : ${response.body()?.toString()}")
-                    orders = response.body() as List<Order>
-                    if (orders.isNotEmpty()) {
-                        binding.root.gravity = Gravity.NO_GRAVITY
-                        adapter = ReadyAdapter(orders)
-                        binding.rvReady.adapter = adapter
-                    } else {
-                        binding.imgPlaceholder.visibility = View.VISIBLE
-                        binding.rvReady.visibility = View.GONE
-                        binding.txtPlaceholder.visibility = View.VISIBLE
-                    }
+        viewModel.error.observe(requireActivity()) { error ->
+            if (error == null) {
+                viewModel.apiResponse.observe(requireActivity()) { response ->
+                    if (response.isSuccessful) {
+                        if (response.body()?.isNotEmpty() == true) {
+                            Log.d(TAG, "Order : ${response.body()?.toString()}")
+                            orders = response.body() as List<Order>
+                            if (orders.isNotEmpty()) {
+                                binding.root.gravity = Gravity.NO_GRAVITY
+                                binding.rvReady.visibility = View.VISIBLE
+                                adapter = ReadyAdapter(orders)
+                                binding.rvReady.adapter = adapter
+                            } else {
+                                binding.imgPlaceholder.visibility = View.VISIBLE
+                                binding.rvReady.visibility = View.GONE
+                                binding.txtPlaceholder.visibility = View.VISIBLE
+                            }
 
-                } else
-                    Log.d(TAG, "Response is empty!")
-            } else
-                Log.d(TAG, "Error : ${response.code()}")
+                        } else
+                            Log.d(TAG, "Response is empty!")
+                    } else
+                        Log.d(TAG, "Error : ${response.code()}")
+                }
+            } else {
+                binding.rvReady.visibility = View.GONE
+                binding.imgPlaceholder.setImageResource(R.drawable.ic_stars)
+                binding.imgPlaceholder.visibility = View.VISIBLE
+
+                binding.txtPlaceholder.text = "No internet!"
+                binding.txtPlaceholder.visibility = View.VISIBLE
+            }
         }
+
     }
 
 
