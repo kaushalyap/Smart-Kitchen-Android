@@ -4,14 +4,14 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.smartkitchenandroid.api.SimpleResponse
 import com.example.smartkitchenandroid.models.User
 import com.example.smartkitchenandroid.repository.Repository
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 @SuppressLint("LogConditional")
 class SignInViewModel(private val repository: Repository) : ViewModel() {
-    val apiResponse: MutableLiveData<Response<Array<User>>> = MutableLiveData()
+    val apiResponse: MutableLiveData<SimpleResponse<Array<User>>> = MutableLiveData()
     val error: MutableLiveData<String> = MutableLiveData()
 
     fun getUser(user: User) {

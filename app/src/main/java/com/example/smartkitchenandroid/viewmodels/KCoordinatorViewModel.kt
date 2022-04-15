@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.smartkitchenandroid.api.SimpleResponse
 import com.example.smartkitchenandroid.models.Order
 import com.example.smartkitchenandroid.repository.Repository
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 @SuppressLint("LogConditional")
 class KCoordinatorViewModel(private val repository: Repository) : ViewModel() {
-    val apiResponse: MutableLiveData<Response<List<Order>>> = MutableLiveData()
-    val statusCode: MutableLiveData<Response<String>> = MutableLiveData()
+    val apiResponse: MutableLiveData<SimpleResponse<List<Order>>> = MutableLiveData()
+    val statusCode: MutableLiveData<SimpleResponse<String>> = MutableLiveData()
     val error: MutableLiveData<String> = MutableLiveData()
 
     fun getOrderByStatus(status: String) {

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -59,9 +60,9 @@ class SignInFragment : Fragment() {
         viewModel.getUser(user)
         viewModel.apiResponse.observe(requireActivity()) { response ->
             if (response.isSuccessful) {
-                if (response.body()?.isNotEmpty() == true) {
-                    Log.d(TAG, "Order ${response.body()?.get(0)?.role?.toString()}")
-                    val role = response.body()?.get(0)?.role?.toString()
+                if (response.data?.body()?.isNotEmpty() == true) {
+                    Log.d(TAG, "Order ${response.data.body()?.get(0)?.role?.toString()}")
+                    val role = response.data.body()?.get(0)?.role?.toString()
 
                     if (role == Roles.WAITER.name) {
                         findNavController().navigate(R.id.action_signIn_to_waiter)
@@ -72,8 +73,11 @@ class SignInFragment : Fragment() {
                     }
                 } else
                     Log.d(TAG, "Response is empty!")
-            } else
-                Log.d(TAG, "Error : ${response.code()}")
+            } else {
+                if (response.exception != null) {
+                    Toast.makeText(context, "No internet!", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

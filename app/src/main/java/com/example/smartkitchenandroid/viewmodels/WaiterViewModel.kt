@@ -1,27 +1,26 @@
 package com.example.smartkitchenandroid.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.smartkitchenandroid.api.SimpleResponse
 import com.example.smartkitchenandroid.models.Order
 import com.example.smartkitchenandroid.repository.Repository
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class WaiterViewModel(private val repository: Repository) : ViewModel() {
-    val apiResponse: MutableLiveData<Response<List<Order>>> = MutableLiveData()
+    val apiResponse: MutableLiveData<SimpleResponse<List<Order>>> = MutableLiveData()
+    val statusCode: MutableLiveData<SimpleResponse<String>> = MutableLiveData()
     val error: MutableLiveData<String> = MutableLiveData()
-    val statusCode: MutableLiveData<Response<String>> = MutableLiveData()
 
     fun getOrderByStatus(status: String) {
         viewModelScope.launch {
             try {
                 val response = repository.getOrderByStatus(status)
                 apiResponse.value = response
-
             } catch (ex: Exception) {
-                error.value = ex.message.toString()
-//                Log.d("WaiterViewModel", ex.stackTraceToString())
+                error.value = ex.stackTraceToString()
             }
         }
     }
@@ -32,8 +31,7 @@ class WaiterViewModel(private val repository: Repository) : ViewModel() {
                 val response = repository.postUpdateOrderStatus(status)
                 statusCode.value = response
             } catch (ex: Exception) {
-                error.value = ex.message.toString()
-//                Log.d("WaiterViewModel", ex.message.toString())
+                Log.d("WaiterViewModel", ex.message.toString())
             }
         }
     }
