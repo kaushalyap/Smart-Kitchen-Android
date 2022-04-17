@@ -8,16 +8,16 @@ import retrofit2.Response
 
 class Repository {
 
-    suspend fun getUser(email: String, passwordHash: String): SimpleResponse<Array<User>> {
-        return safeApiCall { RetrofitInstance.api.getUser(email, passwordHash) }
+    suspend fun getUser(email: String, password: String): SimpleResponse<Array<User>> {
+        return safeApiCall { RetrofitInstance.api.getUser(email, password) }
     }
 
     suspend fun getOrderByStatus(status: String): SimpleResponse<List<Order>> {
         return safeApiCall { RetrofitInstance.api.getOrderByStatus(status, "timestamp", "desc") }
     }
 
-    suspend fun postUpdateOrderStatus(status: String): SimpleResponse<String> {
-        return safeApiCall { RetrofitInstance.api.updateOrderStatus(status) }
+    suspend fun postUpdateOrderStatus(id: Int, order: Order): SimpleResponse<Order> {
+        return safeApiCall { RetrofitInstance.api.updateOrderStatus(id, order) }
     }
 
     private inline fun <T> safeApiCall(apiCall: () -> Response<T>): SimpleResponse<T> {

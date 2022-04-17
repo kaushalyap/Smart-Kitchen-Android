@@ -1,6 +1,7 @@
 package com.example.smartkitchenandroid.viewmodels
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,16 +13,14 @@ import kotlinx.coroutines.launch
 @SuppressLint("LogConditional")
 class SignInViewModel(private val repository: Repository) : ViewModel() {
     val apiResponse: MutableLiveData<SimpleResponse<Array<User>>> = MutableLiveData()
-    val error: MutableLiveData<String> = MutableLiveData()
 
     fun getUser(user: User) {
         viewModelScope.launch {
             try {
-                val response = repository.getUser(user.email, "asf145ksapgkbak")
+                val response = repository.getUser(user.email, user.password)
                 apiResponse.value = response
             } catch (ex: Exception) {
-                error.value = ex.stackTraceToString()
-//                Log.d(TAG, ex.message.toString())
+                Log.d(TAG, ex.message.toString())
             }
         }
     }

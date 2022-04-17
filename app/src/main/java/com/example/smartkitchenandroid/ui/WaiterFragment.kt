@@ -27,7 +27,7 @@ class WaiterFragment : Fragment() {
     }
 
     private fun init() {
-        val fragmentList = arrayListOf(
+        val fragmentList = arrayListOf<Fragment>(
             NewFragment.newInstance(),
             ConfirmedFragment.newInstance(),
             ReadyFragment.newInstance()

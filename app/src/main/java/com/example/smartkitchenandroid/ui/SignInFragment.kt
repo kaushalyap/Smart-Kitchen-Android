@@ -75,7 +75,13 @@ class SignInFragment : Fragment() {
                     Log.d(TAG, "Response is empty!")
             } else {
                 if (response.exception != null) {
-                    Toast.makeText(context, "No internet!", Toast.LENGTH_SHORT).show()
+                    val errorMessage = response.exception.message
+                    if (errorMessage?.contains("No address associated with hostname") == true)
+                        Toast.makeText(context, "No internet!", Toast.LENGTH_SHORT).show()
+                    else {
+                        Log.d(TAG, errorMessage.toString())
+                        Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

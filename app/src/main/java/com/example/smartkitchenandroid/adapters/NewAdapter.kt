@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smartkitchenandroid.R
 import com.example.smartkitchenandroid.models.Order
 
-class NewAdapter(var dataSet: List<Order>) :
+class NewAdapter(var dataSet: ArrayList<Order>, private val listener: OnItemClickListener) :
     RecyclerView.Adapter<NewAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, listener: OnItemClickListener) : RecyclerView.ViewHolder(view) {
         val txtOrder: TextView
         val txtStatus: TextView
         val cbCheck: CheckBox
@@ -21,25 +21,25 @@ class NewAdapter(var dataSet: List<Order>) :
             txtOrder = view.findViewById(R.id.txt_order)
             txtStatus = view.findViewById(R.id.txt_status)
             cbCheck = view.findViewById(R.id.cb_complete)
+            view.setOnClickListener {
+                cbCheck.isChecked = true
+                val position = absoluteAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(position)
+                }
+            }
         }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.item_order, viewGroup, false)
-        return ViewHolder(view)
+        return ViewHolder(view, listener)
     }
 
-
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
         viewHolder.txtOrder.text = dataSet[position].order
         viewHolder.txtStatus.text = dataSet[position].status.name
-
-        viewHolder.cbCheck.setOnCheckedChangeListener { _, _ ->
-
-        }
-
     }
 
     override fun getItemCount(): Int = dataSet.size
@@ -48,3 +48,4 @@ class NewAdapter(var dataSet: List<Order>) :
         const val TAG: String = "NewAdapter"
     }
 }
+

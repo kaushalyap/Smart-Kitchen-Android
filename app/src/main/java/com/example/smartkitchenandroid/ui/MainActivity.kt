@@ -29,14 +29,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateAccordingToRole() {
-        if (isAlreadySignedIn())
+        if (isAlreadySignedIn()) {
             if (getRole() != "")
                 if (getRole() == Roles.WAITER.name)
                     navController.navigate(R.id.action_global_waiter)
                 else
                     navController.navigate(R.id.action_global_kitchenCoordinator)
-            else
-                navController.navigate(R.id.action_global_signIn)
+        } else
+            navController.navigate(R.id.action_global_signIn)
     }
 
     private fun initNavigation() {

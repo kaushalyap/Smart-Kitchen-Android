@@ -25,5 +25,5 @@ interface SmartKitchenApi {
 
     @Headers(HEADER_USER_AGENT)
     @PATCH("orders/{id}")
-    suspend fun updateOrderStatus(@Path("id") id: String): Response<String>
+    suspend fun updateOrderStatus(@Path("id") id: Int, @Body order: Order): Response<Order>
 }

@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smartkitchenandroid.R
 import com.example.smartkitchenandroid.models.Order
 
-class ConfirmedAdapter(var dataSet: List<Order>) :
+class ConfirmedAdapter(var dataSet: ArrayList<Order>, private val listener: OnItemClickListener) :
     RecyclerView.Adapter<ConfirmedAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, listener: OnItemClickListener) : RecyclerView.ViewHolder(view) {
         val txtOrder: TextView
         val txtStatus: TextView
         val cbCheck: CheckBox
@@ -21,13 +21,20 @@ class ConfirmedAdapter(var dataSet: List<Order>) :
             txtOrder = view.findViewById(R.id.txt_order)
             txtStatus = view.findViewById(R.id.txt_status)
             cbCheck = view.findViewById(R.id.cb_complete)
+            view.setOnClickListener {
+                cbCheck.isChecked = true
+                val position = absoluteAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(position)
+                }
+            }
         }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.item_order, viewGroup, false)
-        return ViewHolder(view)
+        return ViewHolder(view, listener)
     }
 
 

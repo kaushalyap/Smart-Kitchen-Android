@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.smartkitchenandroid.R
 import com.example.smartkitchenandroid.adapters.ConfirmedAdapter
+import com.example.smartkitchenandroid.adapters.OnItemClickListener
 import com.example.smartkitchenandroid.databinding.FragmentConfirmedBinding
 import com.example.smartkitchenandroid.models.Order
 import com.example.smartkitchenandroid.models.OrderStatus
@@ -21,14 +22,14 @@ import com.example.smartkitchenandroid.viewmodels.WaiterViewModel
 import com.example.smartkitchenandroid.viewmodels.WaiterViewModelFactory
 
 
-class ConfirmedFragment : Fragment() {
+class ConfirmedFragment : Fragment(), OnItemClickListener {
 
     private var _binding: FragmentConfirmedBinding? = null
     private val binding get() = _binding!!
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: ConfirmedAdapter
     private lateinit var viewModel: WaiterViewModel
-    private var orders = emptyList<Order>()
+    private var orders = ArrayList<Order>()
     private lateinit var runnable: Runnable
     private var handler = Handler(Looper.getMainLooper())
     private val repeatPeriod: Long = 2000
@@ -56,20 +57,18 @@ class ConfirmedFragment : Fragment() {
                 if (response.isSuccessful) {
                     if (response.data?.body()?.isNotEmpty() == true) {
                         Log.d(NewFragment.TAG, "Order : ${response.data.body()?.toString()}")
-                        orders = response.data.body() as List<Order>
+                        orders = response.data.body() as ArrayList<Order>
 
                         if (orders.isNotEmpty()) {
                             binding.imgPlaceholder.visibility = View.GONE
                             binding.txtPlaceholder.visibility = View.GONE
                             binding.root.gravity = Gravity.NO_GRAVITY
                             binding.rvConfirmed.visibility = View.VISIBLE
-                            adapter = ConfirmedAdapter(orders)
+                            adapter = ConfirmedAdapter(orders, this)
                             binding.rvConfirmed.adapter = adapter
                         } else {
                             binding.imgPlaceholder.setImageResource(R.drawable.ic_empty_street)
-                            binding.imgPlaceholder.visibility = View.VISIBLE
-                            binding.rvConfirmed.visibility = View.GONE
-                            binding.txtPlaceholder.visibility = View.VISIBLE
+                            showPlaceholder()
                         }
                     } else {
                         Log.d(NewFragment.TAG, "Response is empty!")
@@ -78,16 +77,41 @@ class ConfirmedFragment : Fragment() {
                     if (response.exception != null) {
                         binding.root.gravity = Gravity.CENTER
                         binding.imgPlaceholder.setImageResource(R.drawable.ic_stars)
-                        binding.imgPlaceholder.visibility = View.VISIBLE
-                        binding.rvConfirmed.visibility = View.GONE
                         binding.txtPlaceholder.text = "No internet!"
-                        binding.txtPlaceholder.visibility = View.VISIBLE
+                        showPlaceholder()
                     }
                 }
             }
             handler.postDelayed(runnable, repeatPeriod)
         }
         handler.postDelayed(runnable, repeatPeriod)
+    }
+
+    override fun onItemClick(position: Int) {
+        val order = orders[position]
+        order.status = OrderStatus.CONFIRMED
+        viewModel.updateOrderStatus(order.id.toInt(), order)
+
+        viewModel.statusCode.observe(requireActivity()) { response ->
+            if (response.isSuccessful) {
+                orders.removeAt(position)
+                adapter.notifyItemRemoved(position)
+
+                if (orders.isEmpty()) {
+                    binding.root.gravity = Gravity.CENTER
+                    binding.imgPlaceholder.setImageResource(R.drawable.ic_empty_street)
+                    showPlaceholder()
+                }
+            } else {
+                Log.d(NewFragment.TAG, response.exception?.message.toString())
+            }
+        }
+    }
+
+    private fun showPlaceholder() {
+        binding.rvConfirmed.visibility = View.GONE
+        binding.imgPlaceholder.visibility = View.VISIBLE
+        binding.txtPlaceholder.visibility = View.VISIBLE
     }
 
 

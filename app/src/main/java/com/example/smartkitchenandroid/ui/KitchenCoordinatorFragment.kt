@@ -27,7 +27,7 @@ class KitchenCoordinatorFragment : Fragment() {
     }
 
     private fun init() {
-        val fragmentList = arrayListOf(
+        val fragmentList = arrayListOf<Fragment>(
             ConfirmedFragment.newInstance(),
             ReadyFragment.newInstance()
         )

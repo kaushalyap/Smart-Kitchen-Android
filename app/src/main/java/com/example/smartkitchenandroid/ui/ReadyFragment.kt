@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.smartkitchenandroid.R
+import com.example.smartkitchenandroid.adapters.OnItemClickListener
 import com.example.smartkitchenandroid.adapters.ReadyAdapter
 import com.example.smartkitchenandroid.databinding.FragmentReadyBinding
 import com.example.smartkitchenandroid.models.Order
@@ -21,14 +22,14 @@ import com.example.smartkitchenandroid.viewmodels.WaiterViewModel
 import com.example.smartkitchenandroid.viewmodels.WaiterViewModelFactory
 
 
-class ReadyFragment : Fragment() {
+class ReadyFragment : Fragment(), OnItemClickListener {
 
     private var _binding: FragmentReadyBinding? = null
     private val binding get() = _binding!!
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: ReadyAdapter
     private lateinit var viewModel: WaiterViewModel
-    private var orders = emptyList<Order>()
+    private var orders = ArrayList<Order>()
     private lateinit var runnable: Runnable
     private var handler = Handler(Looper.getMainLooper())
     private val repeatPeriod: Long = 2000
@@ -58,18 +59,16 @@ class ReadyFragment : Fragment() {
                 if (response.isSuccessful) {
                     if (response.data?.body()?.isNotEmpty() == true) {
                         Log.d(TAG, "Order : ${response.data.body()?.toString()}")
-                        orders = response.data.body() as List<Order>
+                        orders = response.data.body() as ArrayList<Order>
                         if (orders.isNotEmpty()) {
                             binding.imgPlaceholder.visibility = View.GONE
                             binding.txtPlaceholder.visibility = View.GONE
                             binding.root.gravity = Gravity.NO_GRAVITY
                             binding.rvReady.visibility = View.VISIBLE
-                            adapter = ReadyAdapter(orders)
+                            adapter = ReadyAdapter(orders, this)
                             binding.rvReady.adapter = adapter
                         } else {
-                            binding.imgPlaceholder.visibility = View.VISIBLE
-                            binding.rvReady.visibility = View.GONE
-                            binding.txtPlaceholder.visibility = View.VISIBLE
+                            showPlaceholder()
                         }
                     } else
                         Log.d(TAG, "Response is empty!")
@@ -78,10 +77,8 @@ class ReadyFragment : Fragment() {
                     if (response.exception != null) {
                         binding.root.gravity = Gravity.CENTER
                         binding.imgPlaceholder.setImageResource(R.drawable.ic_stars)
-                        binding.imgPlaceholder.visibility = View.VISIBLE
-                        binding.rvReady.visibility = View.GONE
                         binding.txtPlaceholder.text = "No internet!"
-                        binding.txtPlaceholder.visibility = View.VISIBLE
+                        showPlaceholder()
                     }
                 }
             }
@@ -90,6 +87,32 @@ class ReadyFragment : Fragment() {
         handler.postDelayed(runnable, repeatPeriod)
     }
 
+    private fun showPlaceholder() {
+        binding.rvReady.visibility = View.GONE
+        binding.imgPlaceholder.visibility = View.VISIBLE
+        binding.txtPlaceholder.visibility = View.VISIBLE
+    }
+
+    override fun onItemClick(position: Int) {
+        val order = orders[position]
+        order.status = OrderStatus.CONFIRMED
+        viewModel.updateOrderStatus(order.id.toInt(), order)
+
+        viewModel.statusCode.observe(requireActivity()) { response ->
+            if (response.isSuccessful) {
+                orders.removeAt(position)
+                adapter.notifyItemRemoved(position)
+
+                if (orders.isEmpty()) {
+                    binding.root.gravity = Gravity.CENTER
+                    binding.imgPlaceholder.setImageResource(R.drawable.ic_empty_street)
+                    showPlaceholder()
+                }
+            } else {
+                Log.d(NewFragment.TAG, response.exception?.message.toString())
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
